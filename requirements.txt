@@ -1,5 +1,13 @@
 fastapi
+jupyter
 uvicorn
 sqlalchemy
 opencv-python
 mediapipe
+torch
+torchvision
+torchaudio
+pytest
+black
+langchain
+ultralytics
