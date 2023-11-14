@@ -1,0 +1,6 @@
+jupyter
+opencv-python
+numpy
+matplotlib
+lightning
+ultralytics
