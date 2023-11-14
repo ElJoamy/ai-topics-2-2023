@@ -1,0 +1,22 @@
+description: Ultralytics YOLOv8n-cls model trained on /home/pepe/dev/upb/topics/cats
+author: Ultralytics
+license: AGPL-3.0 https://ultralytics.com/license
+date: '2023-11-13T16:17:02.070451'
+version: 8.0.208
+stride: 1
+task: classify
+batch: 1
+imgsz:
+- 512
+- 512
+names:
+  0: AFRICAN LEOPARD
+  1: CARACAL
+  2: CHEETAH
+  3: CLOUDED LEOPARD
+  4: JAGUAR
+  5: LIONS
+  6: OCELOT
+  7: PUMA
+  8: SNOW LEOPARD
+  9: TIGER
