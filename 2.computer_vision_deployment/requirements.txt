@@ -1,6 +1,8 @@
 jupyter
 opencv-python
 numpy
+torch
+torchvision
 matplotlib
 lightning
 ultralytics
