@@ -12,15 +12,18 @@ from fastapi import (
 from fastapi.responses import Response
 import numpy as np
 from PIL import Image, UnidentifiedImageError
-from predictor import CatsPredictor
+from predictor import CatsPredictor, FaceDetector
 
 app = FastAPI(title="Cats classification API")
 
 predictor = CatsPredictor()
+face_detector = FaceDetector()
 
 def get_predictor():
     return predictor
 
+def get_face_detector():
+    return face_detector
 
 def predict_uploadfile(predictor, file):
     img_stream = io.BytesIO(file.file.read())
@@ -71,29 +74,14 @@ def predict_and_annotate(
     return Response(content=image_stream.read(), media_type="image/jpeg")
 
 
-@app.get("/reports", responses={
-    200: {"content": {"text/csv": {}}}
-})
-def download_report() -> Response:
-    data = [
-        {"image": "test1.jpg", "score": 0.7},
-        {"image": "test2.jpg", "score": 0.1},
-        {"image": "test3.jpg", "score": 0.99},
-    ]
-    csv_stream = io.StringIO()
-    writer = csv.DictWriter(
-        csv_stream, 
-        fieldnames=["image", "score"],
-        quoting=csv.QUOTE_ALL
-        )
-    writer.writeheader()
-    for row in data:
-        writer.writerow(row)
+@app.post("/faces")
+def detect_faces(
+    file: UploadFile = File(...), 
+    predictor: FaceDetector = Depends(get_face_detector)
+):
+    results, _ = predict_uploadfile(predictor, file)
     
-    text = csv_stream.getvalue()
-    return Response(content=text, media_type="text/csv")
-    
-
+    return results
 
 if __name__ == "__main__":
     import uvicorn
