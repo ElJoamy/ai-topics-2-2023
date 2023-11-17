@@ -10,16 +10,20 @@ from fastapi import (
 )
 from fastapi.responses import Response
 import numpy as np
+from functools import cache
 from PIL import Image
 from detector import ObjectDetector, Detection
+from config import get_settings
 
-app = FastAPI(title="Object detection API")
+SETTINGS = get_settings()
 
-object_detector = ObjectDetector()
+app = FastAPI(title=SETTINGS.api_name, version=SETTINGS.revision)
 
 
+@cache
 def get_object_detector():
-    return object_detector
+    print("creating model...")
+    return ObjectDetector()
 
 def predict_uploadfile(predictor, file, threshold):
     img_stream = io.BytesIO(file.file.read())

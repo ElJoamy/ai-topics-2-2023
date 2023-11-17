@@ -1,6 +1,9 @@
 from ultralytics import YOLO
 from pydantic import BaseModel
 from enum import Enum
+from config import get_settings
+
+SETTINGS = get_settings()
 
 class PredictionType(str, Enum):
     classification = "CLS"
@@ -18,7 +21,7 @@ class Detection(GeneralPrediction):
 
 class ObjectDetector:
     def __init__(self) -> None:
-        self.model = YOLO("yolov8n.pt")
+        self.model = YOLO(SETTINGS.yolo_version)
 
     def predict_image(self, image_array, threshold):
         results = self.model(image_array, conf=threshold)[0]
