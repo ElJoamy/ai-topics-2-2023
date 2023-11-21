@@ -8,13 +8,17 @@ from pydantic import BaseModel
 class ArticleAnalysis(BaseModel):
     url: str    # url del articulo
     length: int # longitud en caracteres
-    n_locations: int    # cantidad de ubicaciones mencionadas
+    title: str  # titulo del articulo
+    n_locations: int    # cantidad de ubicaciones unicas mencionadas
     top_location: str
-    n_people: int       # cantidad de personas mencionadas
+    n_people: int       # cantidad de personas unicas mencionadas
     top_person: str
     n_org: int
     top_org: str
 
+# extra:
+# recibir una lista de enlaces:
+# devolver una lista ArticleAnalysis
 
 app = FastAPI(title="News Analyzer")
 
