@@ -4,6 +4,8 @@ from functools import cache
 from bs4 import BeautifulSoup
 import spacy
 from pydantic import BaseModel
+from typing import List
+
 
 class ArticleAnalysis(BaseModel):
     url: str    # url del articulo
@@ -44,7 +46,35 @@ def analyze_news(url: str = Body(...), nlp=Depends(get_nlp)):
     # retornar resultados
     return {}
 
+@app.post("/newUrls")
+def analyze_news(urls: List[str] = Body(...), nlp=Depends(get_nlp)):
+    results = []
+    for url in urls:
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise HTTPException(status_code=400, detail="request failed!")
+        html = response.text
+        soup = BeautifulSoup(html, "html.parser")
+        text_elements = soup.find_all("div", class_="text-editor")
+        texts = [elem.get_text() for elem in text_elements]
+        doc = nlp(texts[0])
+        analysis = ArticleAnalysis(
+            url=url,
+            length=len(texts[0]),
+            title=soup.title.string,
+            n_locations=len(doc.ents),
+            top_location="",
+            n_people=0,
+            top_person="",
+            n_org=0,
+            top_org=""
+        )
+        results.append(analysis)
+    
+    # retornar resultados
+    return results
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", reload=True)
+
