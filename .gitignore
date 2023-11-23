@@ -165,3 +165,7 @@ yolov8l.pt
 
 # propios
 alternativas.md
+
+# openai
+.env
+/openai
