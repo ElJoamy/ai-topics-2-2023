@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import spacy
 from pydantic import BaseModel
 import httpx
+from typing import List
 
 class ArticleAnalysis(BaseModel):
     url: str            # url del articulo
