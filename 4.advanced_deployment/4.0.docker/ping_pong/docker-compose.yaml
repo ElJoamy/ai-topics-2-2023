@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  ping-backend:
+    build: ping/
+    ports:
+      - "8001:8001"
+
+  pong-backend:
+    build: pong/
+    ports:
+      - "80:80"
